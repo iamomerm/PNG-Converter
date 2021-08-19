@@ -1,13 +1,15 @@
 from PIL import Image
+import os
 
-ImgPath = input('Enter Image Path: ')
+img_dir = input('Enter Directory Path: ').replace('"', '')
 
-try:     
-    ImgPath = ImgPath.replace('"','') # Remove Quotation Marks
+try:
+    for img_file in os.listdir(img_dir):
+        img_path = os.path.join(img_dir, img_file)
+        if os.path.isfile(img_path):
+            new_img_path = os.path.join(img_dir, os.path.splitext(img_path)[0] + '.png')
+            new_img_file = Image.open(img_path).convert('RGB') # Convert to 24Bit
+            new_img_file.save(new_img_path)
 
-    myImg = Image.open(ImgPath).convert('RGB') # Convert to 24Bit
-
-    myImg.save('24Bit.png')
-
-except:   
-    print('Invalid Image (' + str(ImgPath) + ')!')
+except Exception as exception:   
+    print('Error : %s!' % str(exception))
